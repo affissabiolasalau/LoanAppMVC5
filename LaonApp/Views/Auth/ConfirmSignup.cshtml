@@ -1,0 +1,95 @@
+﻿@using System.Security.Claims
+@model LoanApp.Models.ConfirmEmail
+
+@{
+    Layout = "_AuthLayout";
+}
+
+@{
+    ViewData["Title"] = "Confirm Password";
+}
+
+<div class="container mt--8 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+            <div class="card bg-secondary border-0 mb-0">
+                <div class="card-header bg-transparent pb-5">
+                    <!--   <div class="text-muted text-center mt-2 mb-3"><small>Sign in with</small></div>
+                        <div class="btn-wrapper text-center">
+
+                            <a href="#" class="btn btn-neutral btn-icon">
+                                <span class="btn-inner--icon"><img src="~/templates/assets/img/icons/common/google.svg"></span>
+                                <span class="btn-inner--text">Google</span>
+                            </a>
+                        </div>
+                    </div> -->
+                    <div class="card-body px-lg-5 py-lg-5">
+                        <!-- <div class="text-center text-muted mb-4">
+        <small>Or sign in with credentials</small>
+    </div> -->
+                        <form id="form" role="form" method="post" asp-controller="Auth" asp-action="ResendCode">
+                            <div class='alert alert-success' role='alert'><span>You will get a code shortly.</span> <button value="resend" id="resend" type="button" name="Resend" class="btn-default">Resend</button></div>
+                            </form>
+                            <form id="form" role="form" method="post" asp-controller="Auth" asp-action="ConfirmSignup">
+                                <div class="form-group">
+                                    <div class="input-group input-group-merge input-group-alternative">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                                        </div>
+                                        <input asp-for="Code" id="code" class="form-control alert-primary text-lg-center" type="password" maxlength="5" (keyup)="keytab($event)">
+                                        <!--                                    <input name="n2" class="form-control alert-dark text-lg-center" type="tel" maxlength="1" (keyup)="keytab($event)">
+                    <input name="n3" class="form-control alert-primary text-lg-center" type="tel" maxlength="1" (keyup)="keytab($event)">
+                    <input name="n4" class="form-control alert-darker text-lg-center" type="tel" maxlength="1" (keyup)="keytab($event)">
+                    <input name="n5" class="form-control alert-success text-lg-center" type="tel" maxlength="1" (keyup)="keytab($event)"> -->
+                                    </div>
+                                </div>
+
+                                <div>@Html.Raw(ViewBag.message)</div>
+
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script>
+
+    /*
+     * var form = document.getElementById("form");
+
+    document.getElementById("resend").addEventListener("click", function () {
+        form.submit();
+    });
+    */
+
+    /*
+    var value = document.getElementById('code').value;
+    if (value.length == 5) {
+        document.getElementById('code').submit();
+        return false; // keep form from submitting
+    }
+    */
+    /*
+    let allInputs = document.getElementsByTagName('input');
+    let index = 0;
+    for (i = 0; i < allInputs.length; i++) {
+        allInputs[i].onkeydown = trackInputandChangeFocus;
+    }
+
+    function trackInputandChangeFocus() {
+        let allInputsArr = Array.from(allInputs);
+        let presentInput = allInputsArr.indexOf(this)
+        if (this.value.length == parseInt(this.getAttribute('maxlength'))) {
+            let next;
+            if (presentInput != 4) next = allInputsArr[presentInput + 1]
+            else next = allInputsArr[0]
+            next.focus();
+        }
+    }
+    */
+    </script>

@@ -1,0 +1,104 @@
+﻿@model LoanApp.Models.Auth
+
+
+@{
+    Layout = "_AuthLayout";
+}
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="container mt--8 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+            <div class="card bg-secondary border-0 mb-0">
+                <div class="card-header bg-transparent pb-5">
+                    <!--   <div class="text-muted text-center mt-2 mb-3"><small>Sign in with</small></div>
+                        <div class="btn-wrapper text-center">
+
+                            <a href="#" class="btn btn-neutral btn-icon">
+                                <span class="btn-inner--icon"><img src="~/templates/assets/img/icons/common/google.svg"></span>
+                                <span class="btn-inner--text">Google</span>
+                            </a>
+                        </div>
+                    </div> -->
+                    <div class="card-body px-lg-5 py-lg-5">
+                        <!-- <div class="text-center text-muted mb-4">
+                             <small>Or sign in with credentials</small>
+                         </div> -->
+                        <form role="form" asp-action="Signup">
+                            <div class="form-group mb-3">
+                                <label asp-for="Phone" class="control-label"></label>
+                                <div class="input-group input-group-merge input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-mobile-button"></i></span>
+                                    </div>
+                                    <input asp-for="Phone" class="form-control" placeholder="Phone Number" type="tel">
+                                </div>
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label asp-for="Email" class="control-label"></label>
+                                <div class="input-group input-group-merge input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                    </div>
+                                    <input asp-for="Email" class="form-control" placeholder="Email" type="email">
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password" class="control-label"></label>
+                                <div class="input-group input-group-merge input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                                    </div>
+                                    <input class="form-control" asp-for="Password">
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="RepeatPassword" class="control-label"></label>
+                                <div class="input-group input-group-merge input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                                    </div>
+                                    <input class="form-control" asp-for="RepeatPassword">
+                                </div>
+                                <span asp-validation-for="RepeatPassword" class="text-danger"></span>
+                            </div>
+
+                            <div>@Html.Raw(ViewBag.message)</div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary my-4">Create Account</button>
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <a href="#" class="text-black-50"><small>Have an Account?</small></a>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <a asp-controller="Auth" asp-action="Index" class="text-blue"><small>Sign In</small></a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if(ViewBag.urlParameter != null)
+    {
+        <script>
+            window.location.replace("/Auth/ConfirmSignup/@ViewBag.urlParameter");
+        </script>
+    }
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

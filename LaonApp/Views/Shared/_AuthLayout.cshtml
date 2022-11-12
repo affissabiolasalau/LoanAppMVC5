@@ -1,0 +1,107 @@
+﻿<!--
+=========================================================
+* Argon Dashboard - v1.2.0
+=========================================================
+* Product Page: https://www.creative-tim.com/product/argon-dashboard
+
+
+* Copyright  Creative Tim (http://www.creative-tim.com)
+* Coded by www.creative-tim.com
+
+
+
+=========================================================
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+    <meta name="author" content="Creative Tim">
+
+    <title>@ViewData["Title"] - LoanApp</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="~/templates/assets/img/brand/favicon.png" type="image/png">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+    <!-- Icons -->
+    <link rel="stylesheet" href="~/templates/assets/vendor/nucleo/css/nucleo.css" type="text/css">
+    <link rel="stylesheet" href="~/templates/assets/vendor/fortawesome/fontawesome-free/css/all.min.css" type="text/css">
+    <!-- Page plugins -->
+    <!-- Argon CSS -->
+    <link rel="stylesheet" href="~/templates/assets/css/argon.css?v=1.2.0" type="text/css">
+
+    <style>
+        .footer {
+            position: fixed;
+            height: 45px;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: aliceblue;
+            color: black;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main content -->
+    <div class="main-content" id="panel">
+        <!-- Topnav -->
+        <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  
+                    
+                </div>
+            </div>
+        </nav>
+        <!-- Header -->
+        <!-- Header -->
+        <div class="header bg-primary pb-6">
+            <div class="container-fluid">
+                <div class="header-body">
+                    <div class="row align-items-center py-4">
+                        <div class="col-lg-12 col-7">
+
+                            <br /><br /><br /><br />             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page content -->
+        <div class="container-fluid mt--6">
+            <div class="row">
+
+                @RenderBody()
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Argon Scripts -->
+    <!-- Core -->
+    <script src="~/templates/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="~/templates/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/templates/assets/vendor/js-cookie/js.cookie.js"></script>
+    <script src="~/templates/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="~/templates/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+    <!-- Optional JS -->
+    <script src="~/templates/assets/vendor/chart.js/dist/Chart.min.js"></script>
+    <script src="~/templates/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+    <!-- Argon JS -->
+    <script src="~/templates/assets/js/argon.js?v=1.2.0"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+
+</body>
+
+</html>

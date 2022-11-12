@@ -1,0 +1,301 @@
+﻿
+@model LoanApp.Models.Account 
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+    <style>
+        .slidecontainer {
+            width: 100%;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 25px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+            .slider:hover {
+                opacity: 1;
+            }
+
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                background: #4CAF50;
+                cursor: pointer;
+            }
+
+            .slider::-moz-range-thumb {
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                background: #0026ff;
+                cursor: pointer;
+            }
+    </style>
+
+    <div class="col-xl-8">
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <ul class="nav nav-pills justify-content-end">
+                            <li class="nav-item" data-toggle="chart" data-target="#chart-sales-dark" data-update='{"data":{"datasets":[{"data":[0, 20, 5, 25, 10, 30, 15, 40, 40]}]}}' data-prefix="$" data-suffix="k">
+                                <h3>
+                                    <span class="h2 text-blue font-weight-bold mb-0">&#8358;@ViewBag.ToPay</span>
+
+                                </h3>
+
+                                @{
+                                    if (ViewBag.Date != "")
+                                    {
+                                        <span class="badge badge-dot mr-4">
+                                            <span class="status">@ViewBag.Date</span>
+                                        </span>
+
+                                    }
+
+                                    if (ViewBag.Pending == "Processing")
+                                    {
+                                        <span class="badge badge-dot mr-4">
+                                            <i class="bg-warning"></i>
+                                            <span class="status">@ViewBag.Pending</span>
+                                        </span>
+
+                                    }
+
+                                    if (ViewBag.Pending == "Approved")
+                                    {
+                                        <span class="badge badge-dot mr-4">
+                                            <i class="bg-success"></i>
+                                            <span class="status">@ViewBag.Pending</span>
+                                        </span>
+
+                                    }
+                                }
+
+
+
+                            </li>
+                        </ul>
+                    </div>
+                    @if (ViewBag.Pending == "Approved")
+                    {
+                        <div class="col">
+                            <ul class="nav nav-pills justify-content-end">
+                                <li class="nav-item" data-toggle="chart" data-target="#chart-sales-dark" data-update='{"data":{"datasets":[{"data":[0, 20, 5, 25, 10, 30, 15, 40, 40]}]}}' data-prefix="$" data-suffix="k">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#payModal">Pay</button>
+                                </li>
+                            </ul>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="col">
+                            <ul class="nav nav-pills justify-content-end">
+                                <li class="nav-item" data-toggle="chart" data-target="#chart-sales-dark" data-update='{"data":{"datasets":[{"data":[0, 20, 5, 25, 10, 30, 15, 40, 40]}]}}' data-prefix="$" data-suffix="k">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#applyModal">New Application</button>
+                                </li>
+                            </ul>
+                        </div>
+
+                    }
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="text-uppercase text-muted ls-1 mb-1">Loan Calculator</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Content -->
+                <div class="chart">
+
+                    <form id="calcu">
+
+                        <div class="col">
+                            <div class="slidecontainer">
+                                <input type="range" min="1000" max="250000" value="5000" step="0.1" class="slider" name="amount" id="AmountRange" oninput="calcFunction()">
+                                <p><b>Amount</b>: &#8358;<span id="amountCount"></span></p>
+                            </div>
+                        </div>
+
+                        <div class="col">
+
+                            <select class="form-control" id="days" name="days" oninput="calcFunction()">
+                                <option value="7"> 7 Days</option>
+                                <option value="14"> 14 Days</option>
+                                <option value="30"> 1 Month</option>
+                                <option value="60"> 2 Months</option>
+                                <option value="90"> 3 Months</option>
+                                <option value="120"> 4 Months</option>
+                                <option value="150"> 5 Months</option>
+                                <option value="180"> 6 Months</option>
+                                <option value="365"> 1 Year</option>
+                            </select>
+
+                        </div>
+
+                        <div class="col">
+        <br />                    <p id="result"></p>
+                        </div>
+
+                        <div class="col"><br />
+                            <button onClick="Calculate()" type="button" class="btn btn-primary btn-lg btn-block">Calculate</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="text-uppercase text-muted ls-1 mb-1">Loan History</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Content -->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+<!--                                <th>To Pay</th> -->
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @Html.Raw(ViewBag.Loans)
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">X</button>
+                    </div>
+
+                    <form role="form" method="post" asp-controller="Dashboard" asp-action="Apply">
+
+                        <div class="col">
+
+                            <select onchange="Calculate2()" class="form-control" name="Borrowed" id="AmountRange2">
+                                <option value="0"> Select Amount</option>
+                                <option value="1000"> &#8358;1,000</option>
+                                <option value="2000"> &#8358;2,000</option>
+                                <option value="3000"> &#8358;3,000</option>
+                                <option value="4000"> &#8358;4,000</option>
+                                <option value="5000"> &#8358;5,000</option>
+                                <option value="10000"> &#8358;10,000</option>
+                                <option value="20000"> &#8358;20,000</option>
+                                <option value="30000"> &#8358;30,000</option>
+                                <option value="50000"> &#8358;50,000</option>
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <br />
+
+                            <select onchange="Calculate2()" class="form-control" id="days2" name="Days">
+                                <option value="0"> Select Duration</option>
+                                <option value="7"> 7 Days</option>
+                                <option value="14"> 14 Days</option>
+                                <option value="30"> 1 Month</option>
+                                <option value="60"> 2 Months</option>
+                                <option value="90"> 3 Months</option>
+                                <option value="120"> 4 Months</option>
+                                <option value="150"> 5 Months</option>
+                                <option value="180"> 6 Months</option>
+                                <option value="365"> 1 Year</option>
+                            </select>
+
+                        </div>
+
+                        <div class="col">
+                                             <p id="result2"></p>
+                        </div>
+
+                        <!-- <div class="col">
+                            <br />
+                            <button onClick="Calculate2()" type="button" class="btn btn-primary btn-lg btn-block">Calculate</button>
+                        </div> -->
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var slider = document.getElementById("AmountRange");
+        var output = document.getElementById("amountCount");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function () {
+            output.innerHTML = this.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    </script>
+
+    <script>
+        function Calculate() {
+            amount = document.getElementById("AmountRange").value;
+            days = document.getElementById("days").value;
+
+            //1% interest daily
+            var dailyperce = amount * 0.01;
+            var returning = dailyperce * days;
+            var payback = parseInt(returning) + parseInt(amount);
+
+            document.getElementById("result").innerHTML = "<div class='table-responsive'><table class='table align-items-center table-flush'><thead class='thead-light'><tr><th scope='col' class='sort' data-sort='name'>Loan</th><th scope='col' class='sort' data-sort='budget'>Pay Back</th><th scope='col' class='sort' data-sort='status'>Duration</th></tr></thead><tbody class='list'><tr><td class='budget'>&#8358;" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td><td><span class='badge badge-dot mr-4'><i class='bg-warning'></i>&#8358;" + payback.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"</span></td><td><div class='avatar-group'>"+days+" Days</div></td></tr></tbody></table ></div>";
+        }
+    </script>  
+
+    <script>
+        function Calculate2() {
+            amount = document.getElementById("AmountRange2").value;
+            days = document.getElementById("days2").value;
+
+            //1% interest daily
+            var dailyperce = amount * 0.01;
+            var returning = dailyperce * days;
+            var payback = parseInt(returning) + parseInt(amount);
+
+            document.getElementById("result2").innerHTML = "<div class='table-responsive'><table class='table align-items-center table-flush'><thead class='thead-light'><tr><th scope='col' class='sort' data-sort='name'>Loan</th><th scope='col' class='sort' data-sort='budget'>Pay Back</th><th scope='col' class='sort' data-sort='status'>Duration</th></tr></thead><tbody class='list'><tr><td class='budget'>&#8358;" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td><td><span class='badge badge-dot mr-4'><i class='bg-warning'></i>&#8358;" + payback.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</span></td><td><div class='avatar-group'>" + days + " Days</div></td></tr></tbody></table ></div><br/><button type = 'submit' class='btn btn-success btn-lg btn-block'>Confirm Application</button>";
+        }
+    </script>

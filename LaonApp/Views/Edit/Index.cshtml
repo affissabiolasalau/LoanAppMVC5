@@ -1,0 +1,259 @@
+﻿@model LoanApp.Models.Account
+@{
+    ViewData["Title"] = @ViewBag.PageTitle;
+}
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+<div class="col-xl-4">
+    <div class="card">
+
+        <div class="card card-profile">
+            <img src="~/templates/assets/img/theme/img-1-1000x600.jpg" alt="Image placeholder" class="card-img-top">
+            <div class="row justify-content-center">
+                <div class="col-lg-3 order-lg-2">
+                    <div class="card-profile-image">
+                        <a href="#">
+
+
+                            @{
+                                try
+                                {
+                                    @if (Model.Photo == null)
+                                    {
+                        <img src="~/templates/dp.jpg" class="rounded-circle" data-toggle="modal" data-target="#viewDpModal">
+                                    }
+                                    else
+                                    {
+                        <img src="~/Uploads/@Model.Photo" class="rounded-circle" data-toggle="modal" data-target="#viewDpModal">
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                        <img src="~/Uploads/@Model.Photo" class="rounded-circle" data-toggle="modal" data-target="#viewDpModal">
+                                }
+                            }
+
+
+
+                            <br /><br /><br />
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body pt-0">
+                <div class="col">
+                    <div class="text-center">
+
+                        
+
+                        @if (Model.Photo == null || Model.Photo == "")
+                        {
+                            <div>
+                                <button data-toggle="modal" data-target="#uploadModal" type="button" class="btn btn-primary btn-lg btn-block">Upload Picture</button>
+                                <br />
+                            </div>
+                        }
+
+
+                        <div class="col">
+                            @ViewBag.Email
+                            <br /><br />
+                        </div>
+
+                        <div>
+                            <button type="button" class="btn btn-danger btn-lg btn-block">Reset Password</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xl-8">
+    <div class="card">
+        <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+
+                <div>@Html.Raw(ViewBag.message)</div>
+
+                <div class="card-body">
+                    <form role="form" method="post" asp-controller="Edit" asp-action="Index">
+                        <h6 class="heading-small text-muted mb-4">User information</h6>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="FirstName" class="control-label"></label>
+                                        <input asp-for="FirstName" class="form-control">
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="LastName" class="control-label"></label>
+                                        <input asp-for="LastName" class="form-control" type="text">
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="Phone" class="control-label"></label>
+                                        <input asp-for="Phone" class="form-control" type="text">
+                                        <span asp-validation-for="Phone" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="Dob" class="control-label"></label>
+                                        <input asp-for="Dob" class="form-control" type="date">
+                                        <span asp-validation-for="Dob" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <!-- Address -->
+                        <h6 class="heading-small text-muted mb-4">Other information</h6>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label asp-for="Gender" class="control-label"></label>
+                                        <select asp-for="Gender" class="form-control">
+                                            <option value="">Select</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                        <span asp-validation-for="Gender" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label asp-for="State" class="control-label"></label>
+                                        <input asp-for="State" class="form-control" type="text">
+                                        <span asp-validation-for="State" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label asp-for="City" class="control-label"></label>
+                                        <input asp-for="City" class="form-control" type="text">
+                                        <span asp-validation-for="City" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label asp-for="BVN" class="control-label"></label>
+                                        <input asp-for="BVN" class="form-control" type="tel">
+                                        <span asp-validation-for="BVN" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <!-- Description -->
+
+                        <div class="pl-lg-4">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary my-4">Update!</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <center>
+
+                    @{
+                        try
+                        {
+                            @if (Model.Photo == null)
+                            {
+                <img src="~/templates/dp.jpg" width="300" height="300" id="output_image" class="rounded-circle">
+                            }
+                            else
+                            {
+                <img src="~/Uploads/@Model.Photo" width="300" height="300" id="output_image" class="rounded-circle">
+                            }
+                        }
+                        catch (Exception)
+                        {
+                <img src="~/Uploads/@Model.Photo" width="300" height="300" id="output_image" class="rounded-circle">
+                        }
+                    }
+
+                </center>
+
+                <form enctype="multipart/form-data" role="form" method="post" asp-controller="Edit" asp-action="Upload">
+                    <div class="input-group">
+                        <input class="custom-file-input" type='file' id="getFile" name="files" onchange="preview_image(event)" accept="image/*" capture>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Upload Picture</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewDpModal" tabindex="-1" role="dialog" aria-labelledby="viewDpModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">X</button>
+                </div>
+                <center>
+                    @{
+                        try
+                        {
+                            @if (Model.Photo == null)
+                            {
+                                <img src="~/templates/dp.jpg" width="300" height="300" id="output_image" class="rounded-circle">
+                            }
+                            else
+                            {
+                                <img src="~/Uploads/@Model.Photo" width="300" height="300" id="output_image" class="rounded-circle">
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            <img src="~/Uploads/@Model.Photo" width="300" height="300" id="output_image" class="rounded-circle">
+                        }
+                    }
+                </center>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--Preview Image--->
+<script type='text/javascript'>
+    function preview_image(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var outputImg = document.getElementById('output_image');
+            outputImg.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

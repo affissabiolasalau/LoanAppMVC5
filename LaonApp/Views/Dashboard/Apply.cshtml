@@ -1,0 +1,126 @@
+﻿@model LoanApp.Models.Account
+
+@{
+    ViewData["Title"] = "Apply";
+}
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+
+
+<div class="col-xl-12">
+
+    <div class="card">
+        <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h6 class="text-uppercase text-muted ls-1 mb-1">Loan Application</h6>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Content -->
+            <div class="chart">
+
+                <div>@Html.Raw(ViewBag.message)</div>
+
+                <form role="form" method="post" asp-controller="Dashboard" asp-action="Apply">
+                   <div class="col">
+
+                        <select class="form-control" name="Borrowed" id="AmountRange">
+                            <option value="1000"> &#8358;1,000</option>
+                            <option value="2000"> &#8358;2,000</option>
+                            <option value="3000"> &#8358;3,000</option>
+                            <option value="4000"> &#8358;4,000</option>
+                            <option value="5000"> &#8358;5,000</option>
+                            <option value="10000"> &#8358;10,000</option>
+                            <option value="20000"> &#8358;20,000</option>
+                            <option value="30000"> &#8358;30,000</option>
+                            <option value="50000"> &#8358;50,000</option>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <br />
+
+                        <select class="form-control" id="days" name="Days">
+                            <option value="7"> 7 Days</option>
+                            <option value="14"> 14 Days</option>
+                            <option value="30"> 1 Month</option>
+                            <option value="60"> 2 Months</option>
+                            <option value="90"> 3 Months</option>
+                            <option value="120"> 4 Months</option>
+                            <option value="150"> 5 Months</option>
+                            <option value="180"> 6 Months</option>
+                            <option value="365"> 1 Year</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col">
+                        <br />                    <p id="result"></p>
+                    </div>
+
+                    <div class="col">
+                        <br />
+                        <button onClick="Calculate()" type="button" class="btn btn-primary btn-lg btn-block">Calculate</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    var slider = document.getElementById("AmountRange");
+    var output = document.getElementById("amountCount");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function () {
+        output.innerHTML = this.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+</script>
+
+<script>
+    function Calculate() {
+        amount = document.getElementById("AmountRange").value;
+        days = document.getElementById("days").value;
+
+        //1% interest daily
+        var dailyperce = amount * 0.01;
+        var returning = dailyperce * days;
+        var payback = parseInt(returning) + parseInt(amount);
+
+        document.getElementById("result").innerHTML = "<div class='table-responsive'><table class='table align-items-center table-flush'><thead class='thead-light'><tr><th scope='col' class='sort' data-sort='name'>Loan</th><th scope='col' class='sort' data-sort='budget'>Pay Back</th><th scope='col' class='sort' data-sort='status'>Duration</th></tr></thead><tbody class='list'><tr><td class='budget'>&#8358;" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td><td><span class='badge badge-dot mr-4'><i class='bg-warning'></i>&#8358;" + payback.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</span></td><td><div class='avatar-group'>" + days + " Days</div></td></tr></tbody></table ></div><br/><button type = 'submit' class='btn btn-success btn-lg btn-block'>Confirm Application</button>";
+    }
+</script>
+
+<script>
+    /*
+    var x = document.getElementById("demo");
+    var long = document.getElementById("long");
+    var lati = document.getElementById("lati");
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function showPosition(position) {
+        long.value = position.coords.longitude;
+        lati.value = position.coords.latitude;
+    }
+    /
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

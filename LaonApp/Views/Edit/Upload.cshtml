@@ -1,0 +1,36 @@
+﻿@model LoanApp.Models.Account
+@{
+    ViewData["Title"] = "Upload Picture";
+}
+
+
+<div class="col-xl-12">
+    <div class="card">
+        <div class="card card-profile">
+            <center>
+                <img src="~/templates/dp.jpg" alt="" width="320" height="320" id="output_image" onclick="document.getElementById('getFile').click()">
+            </center>
+        </div>
+        <form enctype="multipart/form-data" role="form" method="post" asp-controller="Edit" asp-action="Upload">            
+            <div class="input-group">
+                <input class="custom-file-input" type='file' id="getFile" name="files" onchange="preview_image(event)" accept="image/*" capture>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Upload Picture</button>
+                </div>
+            </div>
+        </form>
+
+        </div>
+    </div>
+
+        <!--Preview Image--->
+        <script type='text/javascript'>
+            function preview_image(event) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var outputImg = document.getElementById('output_image');
+                    outputImg.src = reader.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        </script>

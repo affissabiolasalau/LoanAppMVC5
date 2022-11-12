@@ -1,0 +1,40 @@
+﻿
+@model LoanApp.Models.Account
+
+@{
+    ViewData["Title"] = "Loan Details";
+}
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+
+<div class="col-xl-12">
+    <div class="card">
+        <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h6 class="text-uppercase text-muted ls-1 mb-1">Loan History</h6>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Content -->
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Amount</th>
+                            <th>To Pay</th>
+                            <th>Status</th>
+                            <th>Due Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @Html.Raw(ViewBag.Loans)
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
